@@ -26,7 +26,7 @@ class JerryBot(Client):
                 return val
         return False
 
-    def get_permission(self, author_id, thread_id, metadata, permission):
+    def get_permission(self, author_id, thread_id, thread_type, metadata, permission):
         print("in permissions")
 
         # build permissions
@@ -40,6 +40,8 @@ class JerryBot(Client):
             p.FN_REMOVEUSER: lambda x, y: self.removeUserFromGroup(x, thread_id=y),
             p.FN_CHANGE_NICKNAME: lambda x, y, z: self.changeNickname(x, y, thread_id=z),
             p.FN_GET_UID: lambda x: self.searchForUsers(x, limit=1)[0].uid,
+            p.FN_GET_NAME: lambda x: self.fetchUserInfo(x)[x].name,
+            p.FN_SEND_MESSAGE: lambda x, y: self.send(Message(text=x), thread_id=y,thread_type=thread_type),
             p.THREAD_NICKNAMES: lambda x: self.fetchGroupInfo(x)[x].nicknames,
             p.SELF_UID: self.uid
         }
@@ -69,6 +71,7 @@ class JerryBot(Client):
                         try:
                             perm_res = self.get_permission(author_id,
                                                            thread_id,
+                                                           thread_type,
                                                            kwargs,
                                                            perm)
                             print("Perm is %s" % (perm_res))
