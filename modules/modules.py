@@ -67,5 +67,7 @@ modules = {
     "duncecap": (duncecap, [MESSAGE_THREADID,
                             THREAD_NICKNAMES,
                             FN_GET_UID,
+                            FN_GET_NAME,
+                            FN_SEND_MESSAGE,
                             FN_CHANGE_NICKNAME])
 }
