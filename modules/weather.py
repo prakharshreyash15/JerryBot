@@ -1,5 +1,5 @@
 import requests
-from auth import WEATHER_TOKEN
+from modules.auth import WEATHER_TOKEN
 import json
 from datetime import datetime
 

@@ -1,9 +1,9 @@
 # -*- coding: utf8 -*-
 import requests
-from auth import TOKEN
+from modules.auth import TOKEN
 import json
 from datetime import datetime
-from HTMLParser import HTMLParser
+from html.parser import HTMLParser
 
 # Used to convert HTML codes to their characters
 h = HTMLParser()

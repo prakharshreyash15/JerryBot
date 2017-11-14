@@ -1,7 +1,6 @@
-import permissions as p
-from menu import menu
+from modules.menu import menu
 from time import sleep
-from datetime import datetime, time
+from datetime import datetime
 import re
 
 def remind(args, perms = {}):

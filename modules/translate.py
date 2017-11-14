@@ -1,6 +1,6 @@
 from microsofttranslator import Translator
-from auth import MSFT_CLIENTID,MSFT_CLIENTSECRET
-from language_table import languages
+from modules.auth import MSFT_CLIENTID,MSFT_CLIENTSECRET
+from modules.language_table import languages
 
 translator = Translator(MSFT_CLIENTID, MSFT_CLIENTSECRET)
 
@@ -48,7 +48,7 @@ def translate_text(args=[], permisions = {}):
                     new_text = translator.translate(words, to_lang, from_lang)
                 from_lang = to_lang
             return new_text
-        except Exception, e:
+        except Exception as e:
             print("ERROR")
             print(str(e))
             return ""

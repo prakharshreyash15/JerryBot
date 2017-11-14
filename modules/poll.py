@@ -1,7 +1,7 @@
-import permissions as p
+from modules.permissions import *
 import os
 import json
-from json_fix import *
+from modules.json_fix import *
 import multiprocessing as mp
 
 # Used to handle concurrency
@@ -16,7 +16,7 @@ def poll(args, perms = {}):
     """
     # Careful w/ threadID (None if in a pm)
     try:
-        threadID = perms[p.MESSAGE_THREADID]
+        threadID = perms[MESSAGE_THREADID]
         if threadID is None:
             raise KeyError
     except KeyError:
@@ -34,7 +34,7 @@ def poll(args, perms = {}):
         os.mkdir('modules/poll/' + threadID)
 
     # Make temp file that indicates currently voting
-    voting_fname = os.path.join("modules/poll/",threadID,"voting.txt")
+    voting_fname = os.path.join("modules/poll/", threadID,"voting.txt")
     if not os.path.isfile(voting_fname):
         with open(voting_fname, "w") as voting:
             voting.write(threadID + " started poll at " + time + ' \n')
@@ -52,12 +52,12 @@ def vote(args, perms = {}):
     """
     # Store permissions
     try:
-        threadID = perms[p.MESSAGE_THREADID]
+        threadID = perms[MESSAGE_THREADID]
     except KeyError:
         # No threadID -> private message
         return "You can't vote in a chat by yourself!"
 
-    userID = perms[p.USER_NAME]
+    userID = perms[USER_NAME]
 
     lock.acquire()
     # Store vote
