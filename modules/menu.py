@@ -158,7 +158,7 @@ def map_html_unencode(lst):
 
 def menu(args, perms={}):
     dhall, day, meal = parse_input(args)
-    header = f"{dhall.capitalize()} - {meal}\n"
+    header = "%s - %s\n" %(dhall.capitalize(), meal)
     food = scraper.get_options(dhall)[meal.capitalize()]
     if len(food) > 0:
         return (header + '\n'.join(food)).encode('utf-8').strip()
