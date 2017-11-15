@@ -80,6 +80,8 @@ def get_dhall(dhall):
         'malot' : 'scripps',
         'scripts' : 'scripps',
         'scrips' :'scripps',
+        'scrapp' : 'scripps',
+        'scrapps' : 'scripps',
 
         'pitzer' : 'pitzer',
         'mcconnell' : 'pitzer',
