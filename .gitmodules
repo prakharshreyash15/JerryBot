@@ -1,3 +1,6 @@
 [submodule "fbchat"]
 	path = fbchat
 	url = https://github.com/0ffkilter/fbchat
+[submodule "modules/MenuScraper"]
+	path = modules/MenuScraper
+	url = http://github.com/0ffkilter/MenuScraper.git

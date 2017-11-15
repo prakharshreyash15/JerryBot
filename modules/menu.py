@@ -4,6 +4,8 @@ from modules.auth import TOKEN
 import json
 from datetime import datetime
 from html.parser import HTMLParser
+from modules.MenuScraper import scraper
+
 
 # Used to convert HTML codes to their characters
 h = HTMLParser()
@@ -125,25 +127,6 @@ def parse_input(in_text):
 
     return dhall, day, meal
 
-def get_menu(dhall, day, meal):
-    url = 'https://aspc.pomona.edu/api/menu/dining_hall/' + dhall + '/day/' + day + '/meal/' + meal
-    req = requests.get(url , params={'auth_token' : TOKEN})
-    try:
-        j = json.loads(req.text)
-    except:
-        return ["ASPC is down :("]
-    food = []
-    food.append('~*~' + dhall + '~*~')
-    food.append('~*~' + day + '~*~')
-    food.append('~*~' + meal + '~*~')
-    try:
-        for f in j[0]['food_items']:
-            food.append(str(f))
-        return food
-    except:
-        print("err")
-        return []
-
 def wat_meal():
     rn = datetime.now()
     day = get_day(datetime.weekday(datetime.today()))
@@ -173,7 +156,8 @@ def map_html_unencode(lst):
 
 def menu(args, perms={}):
     dhall, day, meal = parse_input(args)
-    food = get_menu(dhall, day, meal)
+    header = f"{dhall.capitalize()} - {meal}\n"
+    food = scraper.get_options(dhall)[meal.capitalize()]
     if len(food) > 0:
-        return ('\n'.join(food).encode('utf-8').strip())
+        return (header + '\n'.join(food)).encode('utf-8').strip()
     return "No menu"

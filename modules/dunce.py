@@ -3,21 +3,22 @@ from time import sleep
 
 
 def duncecap(args, perms={}):
-    
+
     # Get name and uid of person
     name = " ".join(args)
     uid = perms[FN_GET_UID](name)
 
     # Get all nicknames in thread
     nicknames = perms[THREAD_NICKNAMES](perms[MESSAGE_THREADID])
-    
+
     # Check that no one is currently the dunce
-    real_name = perms[FN_GET_NAME](uid)
-    for k, v in nicknames.items():
-        if v == "Town Dunce":
-            name = perms[FN_GET_NAME](k)
-       	    perms[FN_SEND_MESSAGE]("%s is already the Town Dunce" % (name), perms[MESSAGE_THREADID])
-            return ""
+    if len(nicknames) > 0:
+        real_name = perms[FN_GET_NAME](uid)
+        for k, v in nicknames.items():
+            if v == "Town Dunce":
+                name = perms[FN_GET_NAME](k)
+                perms[FN_SEND_MESSAGE]("%s is already the Town Dunce" % (name), perms[MESSAGE_THREADID])
+                return ""
     # Store old nickname
     old_name = perms[FN_GET_NAME](k)
     if uid in nicknames:

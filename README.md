@@ -23,7 +23,7 @@ Currently provided modules:
  * eatadick 
  * weather
  * jackets
- * help
+ * helpgi
  * thanks
  
 Planned Modules:

@@ -26,6 +26,7 @@ class JerryBot(Client):
                 return val
         return False
 
+
     def get_permission(self, author_id, thread_id, thread_type, metadata, permission):
         print("in permissions")
 
@@ -43,6 +44,7 @@ class JerryBot(Client):
             p.FN_GET_NAME: lambda x: self.fetchUserInfo(x)[x].name,
             p.FN_SEND_MESSAGE: lambda x, y: self.send(Message(text=x), thread_id=y,thread_type=thread_type),
             p.THREAD_NICKNAMES: lambda x: self.fetchGroupInfo(x)[x].nicknames,
+            p.THREAD_PARTICIPANTS: lambda x: self.fetchGroupInfo(x)[x].particpants,
             p.SELF_UID: self.uid
         }
         return temp.get(permission, None)
