@@ -29,7 +29,7 @@ def add_to_quoteboard(messages, thread_id,
                       height=BOARD_DEFAULT_HEIGHT,
                       margin=BOARD_DEFAULT_MARGIN):
     quoteboard_path = path.join("modules", "data",
-                                f"{thread_id}_quoteboard.jpg")
+                                "%s_quoteboard.jpg" % (perms[MESSAGE_THREADID]))
     print("adding to quoteobard")
     print(messages)
     if not path.exists(quoteboard_path):
@@ -39,7 +39,7 @@ def add_to_quoteboard(messages, thread_id,
     img = Image.open(quoteboard_path)
     draw = ImageDraw.Draw(img)
     for message in messages:
-        print(f"Adding {message}")
+        print(f"Adding %s" % (message))
         font_path = path.join("modules", "fonts",
                               random.choice(quoteboard_fonts))
         font = ImageFont.truetype(font_path, random.randint(24, 54))
@@ -62,7 +62,7 @@ def format_image(message: Text, thread_id: Text,
     else:
         print(pic_path)
         img = Image.open(pic_path)
-    img.save(path.join("modules", "data", f"{thread_id}_last.jpg"))
+    img.save(path.join("modules", "data", "%s_last.jpg" % (thread_id)))
     font = ImageFont.truetype("modules/fonts/MonotypeCorsiva.ttf", 72)
     draw = ImageDraw.Draw(img)
     draw.text((100, 100), message, (255, 255, 255), font=font)
@@ -89,14 +89,14 @@ def imagequote(args=[], perms={}, send_image=True, requote=False):
 
     with open(path.join("modules",
                         "data",
-                        f"{perms[MESSAGE_THREADID]}_quotes.txt"), 'a') as f:
-        f.write(f"{sections[0].strip()}|{author}\n")
+                        "%s_quotes.txt" % (perms[MESSAGE_THREADID])), 'a') as f:
+        f.write("%s|%s\n" % (sections[0].strip(), author))
 
     if send_image:
         if requote:
             format_image(message, perms[MESSAGE_THREADID],
                          path.join("modules", "data",
-                                   f"{perms[MESSAGE_THREADID]}_last.jpg"))
+                                   "%s_last.jpg" % (perms[MESSAGE_THREADID])))
         else:
             format_image(message, perms[MESSAGE_THREADID])
 
@@ -108,7 +108,7 @@ def reroll(args=[], perms={}):
 
     with open(path.join("modules",
                         "data",
-                        f"{perms[MESSAGE_THREADID]}_quotes.txt"), 'r') as f:
+                        "%s_quotes.txt" % (perms[MESSAGE_THREADID])), 'r') as f:
 
         quotes = f.read().split("\n")[:-1]
         last_quote = quotes[-1]
@@ -134,7 +134,7 @@ def savequote(args=[], perms={}):
 def quotes(args=[], perms={}):
     with open(path.join("modules",
                         "data",
-                        f"{perms[MESSAGE_THREADID]}_quotes.txt"), 'r') as f:
+                        "%s_quotes.txt" % (perms[MESSAGE_THREADID])), 'r') as f:
 
         content = f.read()
         lines = content.split("\n")[:-1]
@@ -143,31 +143,30 @@ def quotes(args=[], perms={}):
         formatted_quotes = []
         for q in quotes:
             sections = q.split("|")
-            formatted_quotes.append(f"{sections[0]} - {sections[1]}")
+            formatted_quotes.append("%s - %s" %(sections[0], sections[1]))
     return "\n".join(formatted_quotes)
 
 
 def quoteboard(args=[], perms={}):
 
     quoteboard_path = path.join("modules", "data",
-                                f"{perms[MESSAGE_THREADID]}_quoteboard.jpg")
+                                "%s_quoteboard.jpg" % (perms[MESSAGE_THREADID]))
     copy(quoteboard_path, "image.jpg")
     perms[FN_SEND_IMAGE]("image.jpg", perms[MESSAGE_THREADID])
 
 
 def photo(args=[], perms={}):
-    copy(path.join("modules", "data", f"{perms[MESSAGE_THREADID]}_last.jpg"), "image.jpg")
+    copy(path.join("modules", "data", "%s_last.jpg" % (perms[MESSAGE_THREADID])), "image.jpg")
     perms[FN_SEND_IMAGE]("image.jpg", perms[MESSAGE_THREADID])
-
 
 
 def refresh_quoteboard(args=[], perms={}):
 
     quoteboard_path = path.join("modules", "data",
-                                f"{perms[MESSAGE_THREADID]}_quoteboard.jpg")
+                                "%s_quoteboard.jpg" % (perms[MESSAGE_THREADID]))
     with open(path.join("modules",
                         "data",
-                        f"{perms[MESSAGE_THREADID]}_quotes.txt"), 'r') as f:
+                        "%s.txt" % (perms[MESSAGE_THREADID])), 'r') as f:
 
         content = f.read()
         quotes = content.split("\n")[:-1]
@@ -175,11 +174,11 @@ def refresh_quoteboard(args=[], perms={}):
         for q in quotes:
             sections = q.split("|")
             quote = "\n".join(textwrap.wrap(sections[0], random.randint(20, 60)))
-            formatted_quotes.append(f'{quote}\n       - {sections[1]}')
+            formatted_quotes.append('%s\n       -%s' %(quote, sections[1]))
         if path.exists(quoteboard_path):
             move(quoteboard_path,
                  path.join("modules", "data",
-                           f"{perms[MESSAGE_THREADID]}_quoteboard_old.jpg"))
+                           "%s_quoteboard_old.jpg" % (perms[MESSAGE_THREADID])))
         if len(args) is 0:
             add_to_quoteboard(formatted_quotes, perms[MESSAGE_THREADID])
         elif len(args) is 3:
@@ -191,5 +190,4 @@ def refresh_quoteboard(args=[], perms={}):
         else:
             return "Invalid parameters for new quoteboard - specify width height margin"
         copy(quoteboard_path, "image.jpg")
-        perms[FN_SEND_IMAGE]("image.jpg", perms[MESSAGE_THREADID])
-
+        # perms[FN_SEND_IMAGE]("image.jpg", perms[MESSAGE_THREADID])
