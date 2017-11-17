@@ -8,6 +8,7 @@ from configuration import prefixes
 import sys
 import multiprocessing
 import modules.permissions as p
+import traceback
 
 
 class JerryBot(Client):
@@ -25,7 +26,6 @@ class JerryBot(Client):
             if key == command:
                 return val
         return False
-
 
     def get_permission(self, author_id, thread_id, thread_type, metadata, permission):
         print("in permissions")
@@ -54,6 +54,8 @@ class JerryBot(Client):
                       thread_type, kwargs):
         # If the message starts w/ one of the specified prefixes
         message = message_object.text
+        if message is None:
+            return (False, None)
         try:
             if message[0] in prefixes:
                 # split the message into parts
@@ -68,7 +70,6 @@ class JerryBot(Client):
                     # get the function and permissions list
                     module, permissions = command_module
                     perm_dict = {}
-                    print("index of perms is: ", permissions)
                     # build the perms
                     for perm in permissions:
                         try:
@@ -81,7 +82,6 @@ class JerryBot(Client):
                             perm_dict[perm] = (perm_res)
                         except Exception as e:
                             print("error %s" % (e))
-                    print(perm_dict)
                     # pass the function the arguments and
                     # permissions dictionary
                     result = module(arguments, perm_dict)
@@ -91,7 +91,7 @@ class JerryBot(Client):
                 result = tag(message[1:])
                 return (True, result)
         except Exception as e:
-            print(e)
+            traceback.print_exc()
             with open('error.log', 'w') as log:
                 log.write("OOPS, THERE WAS AN ERROR:\n {}".format(str(e)))
             return (False, "Failing gracefully..")
@@ -103,6 +103,8 @@ class JerryBot(Client):
         # if str(author_id) != str(self.uid):
         isValid, result = self.parse_message(author_id, message_object,
                                              thread_id, thread_type, kwargs)
+        if result is "" or result is None:
+            return
         if isValid:
             self.send(Message(text=result), thread_id=thread_id,
                       thread_type=thread_type)
@@ -117,11 +119,11 @@ class JerryBot(Client):
 
             if self.test:
                 print("==METADATA==")
-                print("%s said: %s" %
-                      (self.fetchUserInfo(author_id), message_object.text))
+                print("%s in %s said: %s" %
+                      (self.fetchUserInfo(author_id), thread_id, message_object.text))
                 # print(mid)
                 # print(author_name)
-                print(kwargs)
+                # print(kwargs)
                 print("====")
 
             p = multiprocessing.Process(target=self.send_message,
@@ -133,8 +135,10 @@ class JerryBot(Client):
             p.start()
 
             # reply to groups
-        except Exception as e:
-            print(e)
+        except (KeyboardInterrupt, SystemExit):
+            sys.exit(0)
+        else:
+            traceback.print_exc()
 
 
 def main():
@@ -152,6 +156,7 @@ def main():
         else:
             # print diagnostic info
             print(sys.exc_info()[0])
+            break
 
 
 if __name__ == "__main__":

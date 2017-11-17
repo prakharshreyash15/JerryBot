@@ -17,7 +17,7 @@ from modules.mini_modules import *
 from modules.permissions import *
 from modules.kick import kick
 from modules.dunce import duncecap
-from modules.quote import imagequote
+from modules.quote import *
 
 help_string = ""
 
@@ -54,10 +54,10 @@ modules = {
     "lenny": (lenny, []),
     "sleep": (sleep, []),
     "snack": (snack, []),
-    "poll": (poll, [MESSAGE_THREADID, MESSAGE_TIME]),
-    "vote": (vote, [MESSAGE_THREADID, USER_NAME]),
-    "result": (result, [MESSAGE_THREADID]),
-    "end": (end, [MESSAGE_THREADID]),
+    # "poll": (poll, [MESSAGE_THREADID, MESSAGE_TIME]),
+    # "vote": (vote, [MESSAGE_THREADID, USER_NAME]),
+    # "result": (result, [MESSAGE_THREADID]),
+    # "end": (end, [MESSAGE_THREADID]),
     "hi": (hi, [USER_NAME]),
     "remind": (remind, [MESSAGE_AUTHOR]),
     "tag": (tag, []),
@@ -72,5 +72,17 @@ modules = {
                             FN_SEND_MESSAGE,
                             FN_CHANGE_NICKNAME]),
     "quote": (imagequote, [MESSAGE_THREADID,
-                           FN_SEND_IMAGE])
+                           FN_SEND_IMAGE]),
+    "reroll": (reroll, [MESSAGE_THREADID,
+                        FN_SEND_IMAGE]),
+    "requote": (requote, [MESSAGE_THREADID,
+                          FN_SEND_IMAGE]),
+    "savequote": (savequote, [MESSAGE_THREADID]),
+    "quotes": (quotes, [MESSAGE_THREADID]),
+    "quoteboard": (quoteboard, [MESSAGE_THREADID,
+                                FN_SEND_IMAGE]),
+    "newquoteboard": (refresh_quoteboard, [MESSAGE_THREADID,
+                                           FN_SEND_IMAGE]),
+    "lastphoto": (photo, [MESSAGE_THREADID,
+                          FN_SEND_IMAGE])
 }
