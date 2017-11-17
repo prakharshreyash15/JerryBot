@@ -123,7 +123,7 @@ def reroll(args=[], perms={}):
 
 # same image, diff quote
 def requote(args=[], perms={}):
-    imagequote(args, perms, True)
+    imagequote(args, perms, requote=True)
 
 
 def savequote(args=[], perms={}):
