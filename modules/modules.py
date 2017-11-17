@@ -17,6 +17,7 @@ from modules.mini_modules import *
 from modules.permissions import *
 from modules.kick import kick
 from modules.dunce import duncecap
+from modules.quote import imagequote
 
 help_string = ""
 
@@ -69,5 +70,7 @@ modules = {
                             FN_GET_UID,
                             FN_GET_NAME,
                             FN_SEND_MESSAGE,
-                            FN_CHANGE_NICKNAME])
+                            FN_CHANGE_NICKNAME]),
+    "quote": (imagequote, [MESSAGE_THREADID,
+                           FN_SEND_IMAGE])
 }

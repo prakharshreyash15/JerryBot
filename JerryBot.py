@@ -45,6 +45,7 @@ class JerryBot(Client):
             p.FN_SEND_MESSAGE: lambda x, y: self.send(Message(text=x), thread_id=y,thread_type=thread_type),
             p.THREAD_NICKNAMES: lambda x: self.fetchGroupInfo(x)[x].nicknames,
             p.THREAD_PARTICIPANTS: lambda x: self.fetchGroupInfo(x)[x].particpants,
+            p.FN_SEND_IMAGE: lambda x,y: self.sendLocalImage(x, message=Message(), thread_id=y, thread_type=thread_type),
             p.SELF_UID: self.uid
         }
         return temp.get(permission, None)
