@@ -5,10 +5,12 @@ from PIL import Image
 from PIL import ImageFont
 from PIL import ImageDraw
 from modules.permissions import *
-from typing import Text
+from typing import Text, Optional
 
 
-def format_image(message: Text, author: Text):
+def format_image(message: Text, author: Optional[Text]):
+    if author is None:
+        author is "someone stupid"
     r = requests.get("https://picsum.photos/800/600/?random", stream=True)
     if r.status_code == 200:
         img = Image.open(BytesIO(r.content))
@@ -23,7 +25,11 @@ def imagequote(args=[], perms={}):
     words = " ".join(args)
     sections = words.split("-")
     message = sections[0].strip()
-    author = sections[1].strip()
+    author = None
+    try:
+        author = sections[1].strip()
+    except IndexError:
+        pass
 
     format_image(message, author)
     perms[FN_SEND_IMAGE]("image.jpg", perms[MESSAGE_THREADID])
