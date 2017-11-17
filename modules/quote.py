@@ -25,6 +25,7 @@ def imagequote(args=[], perms={}):
     words = " ".join(args)
     sections = words.split("-")
     message = sections[0].strip()
+    message.replace("|", "\n")
     author = None
     try:
         author = sections[1].strip()
