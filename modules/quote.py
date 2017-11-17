@@ -29,7 +29,7 @@ def add_to_quoteboard(messages, thread_id,
                       height=BOARD_DEFAULT_HEIGHT,
                       margin=BOARD_DEFAULT_MARGIN):
     quoteboard_path = path.join("modules", "data",
-                                "%s_quoteboard.jpg" % (perms[MESSAGE_THREADID]))
+                                "%s_quoteboard.jpg" % (thread_id))
     print("adding to quoteobard")
     print(messages)
     if not path.exists(quoteboard_path):
@@ -39,7 +39,7 @@ def add_to_quoteboard(messages, thread_id,
     img = Image.open(quoteboard_path)
     draw = ImageDraw.Draw(img)
     for message in messages:
-        print(f"Adding %s" % (message))
+        print("Adding %s" % (message))
         font_path = path.join("modules", "fonts",
                               random.choice(quoteboard_fonts))
         font = ImageFont.truetype(font_path, random.randint(24, 54))
