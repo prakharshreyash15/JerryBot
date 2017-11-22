@@ -19,6 +19,17 @@ quoteboard_fonts = [
     "Raleway-Black.ttf"
 ]
 
+coordinates = [
+    (101, 101),
+    (100, 101),
+    (99, 101),
+    (101, 100),
+    (99, 100),
+    (101, 99),
+    (100, 99),
+    (99, 99)
+]
+
 BOARD_DEFAULT_WIDTH = 4000
 BOARD_DEFAULT_HEIGHT = 3000
 BOARD_DEFAULT_MARGIN = 200
@@ -65,7 +76,9 @@ def format_image(message: Text, thread_id: Text,
     img.save(path.join("modules", "data", "%s_last.jpg" % (thread_id)))
     font = ImageFont.truetype("modules/fonts/MonotypeCorsiva.ttf", 72)
     draw = ImageDraw.Draw(img)
-    draw.text((100, 100), message, (255, 255, 255), font=font)
+    for coords in coordinates:
+        draw.text(coords, message, (0,0,0), font=font)
+    draw.text((100, 100), message, (255,255,255), font=font)
     print("done")
     img.save("image.jpg")
 
@@ -90,7 +103,7 @@ def imagequote(args=[], perms={}, send_image=True, requote=False):
     with open(path.join("modules",
                         "data",
                         "%s_quotes.txt" % (perms[MESSAGE_THREADID])), 'a') as f:
-        f.write("%s|%s\n" % (sections[0].strip(), author))
+        f.write("%s|%s\n" % (sections[0].replace("|","  ").replace("\n", " ").strip(), author))
 
     if send_image:
         if requote:
@@ -115,7 +128,7 @@ def reroll(args=[], perms={}):
         sections = last_quote.split("|")
         last_message = sections[0]
         last_author = sections[1]
-        message = last_message + ("\n       -%s" % (last_author))
+        message = "\n".join(textwrap.wrap(last_message, 24)) + ("\n       -%s" % (last_author))
         format_image(message, perms[MESSAGE_THREADID])
 
         perms[FN_SEND_IMAGE]("image.jpg", perms[MESSAGE_THREADID])
@@ -166,7 +179,7 @@ def refresh_quoteboard(args=[], perms={}):
                                 "%s_quoteboard.jpg" % (perms[MESSAGE_THREADID]))
     with open(path.join("modules",
                         "data",
-                        "%s.txt" % (perms[MESSAGE_THREADID])), 'r') as f:
+                        "%s_quotes.txt" % (perms[MESSAGE_THREADID])), 'r') as f:
 
         content = f.read()
         quotes = content.split("\n")[:-1]
