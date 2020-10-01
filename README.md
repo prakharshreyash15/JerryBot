@@ -1,6 +1,6 @@
 # JerryBot
 
-A Python Facebook chat bot written in Python.  Uses a forked [fbchat](https://pypi.python.org/pypi/fbchat/) module with applied patches to get group chat working.
+A Chat Bot for Facebook written using Python commands.  Uses a forked [fbchat](https://pypi.python.org/pypi/fbchat/) module with applied patches to get group chat working.
 
 Written in Python3
 
